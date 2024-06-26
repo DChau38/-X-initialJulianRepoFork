@@ -1,0 +1,48 @@
+
+/*Interestingly enough, default button type is used by the date headers ... gonna use a className to avoid it*/
+.UpdateButton{
+  width: 10%; 
+  padding: 10px;
+  background-color: rgb(148, 150, 149); /* Button color */
+  color: white; /* Text color */
+  border: none;
+  border-radius: 4px; 
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 20px; /* Larger font size */
+}
+.plead-message {
+  margin-bottom: 20px;
+  font-size: 18px;
+  color: #111111;
+  padding: 10px;
+  border: 2px solid #101113;
+  border-radius: 5px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 20px;
+  background-color: #939292;
+  }  
+
+
+  .custom-spinner {
+    width: 10vw; /* 10% of the viewport width */
+    height: 10vh; /* 10% of the viewport height */
+    animation: spin 1s linear infinite;
+   }
+   
+   
+   @keyframes spin {
+     0% {
+       transform: rotate(0deg);
+    }
+     100% {
+       transform: rotate(360deg);
+    }
+   }
+   
+   .spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Adjust based on your layout */
+   }
