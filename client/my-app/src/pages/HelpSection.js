@@ -1,6 +1,6 @@
 import React from 'react';
 import '../styles/HelpSection.css';
-import ContactMeFooter from '../components/Z_ContactMeFooter';
+import ContactMeFooter from '../components/Header';
 
 function HelpSection() {
   return (
