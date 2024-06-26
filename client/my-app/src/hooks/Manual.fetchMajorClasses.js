@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-//1. fetches classes after major is selected
+//1. fetches classes after major is selected. We're gonna directly put this into the page for ClassFormByManual
 const useFetchClassesUponMajorChange = (selectedMajor, setClasses) => {
     useEffect(() => {
         if (selectedMajor) {

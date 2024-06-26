@@ -1,32 +1,30 @@
 import '../styles/ClassFormByManual.css';
 import React, { useState } from 'react';
-//hooks
-import useFetchMajors from '../hooks/useFetchMajors.Manual';
-import useFetchClassesUponMajorChange from '../hooks/useFetchMajorClasses.Manual';
-//functions
-import {selectNewClass,removeClass,handleMajorChange,handleSendToBackend} from '../utils/miscellanous';
-import addClass from '../utils/addClass.Manual';
+//import state+effects
+import useClassFormByManual from '../hooks/Manual.index.js';
 //components
-import ClassList from '../components/ClassList.Manual.js';
+import SavedClassList from '../components/SavedClassList.Manual.js';
 import ClassDropdown from '../components/ClassDropdown.Manual.js';
 import MajorDropdown from '../components/MajorDropdown.Manual.js';
 
 function ClassFormByManual(){
-    //A. states+variables
-        //initial fetch of all majors
-    const majors=useFetchMajors();
-        //selected major
-    const[selectedMajor,setSelectedMajor]=useState('');
-        //fetch of selected major's classes
-    const[classes,setClasses]=useState([]);
-        //selected class
-    const[selectedClass,setSelectedClass]=useState('');
-        //saved classes
-    const[savedClasses,setSavedClasses]=useState('');
-
-    //B. useEffect hooks
+    //A. accepting states + functions
+    const {
+        majors,
+        classes,
+        selectedMajor,
+        selectedClass,
+        savedClasses,
+        handleMajorChange,
+        selectNewClass,
+        addClass,
+        removeClass,
+        handleSendToBackend,
+        setClasses
+      }=useClassFormByManual;
+    //B. useEffect hook
     useFetchClassesUponMajorChange(selectedMajor,setClasses);
-    //C. pageElement
+    //C. page elements
     return (
         <>
           <ClassList selectedClasses={savedClasses} removeClass={removeClass} />

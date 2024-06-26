@@ -1,5 +1,6 @@
 import {useEffect,useState} from 'react';
 
+//1. we fetch majors once. So we're gonna feed this into Manual.index to get the majors, and then the values will be sent to the page as a state
 function useFetchMajors(){
     //A. state for holding majors
     const [majors,setMajors]=useState([]);
