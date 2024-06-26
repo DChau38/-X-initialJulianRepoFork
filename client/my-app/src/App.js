@@ -5,7 +5,7 @@ import {BrowserRouter as Router,Route,Routes} from 'react-router-dom';
 
 import Header from './components/Header.js';
 import ClassFormByManual from './pages/ClassFormByManual';
-import ClassFormByFile from '.pages/ClassFormByFile';
+import ClassFormByFile from './pages/ClassFormByFile';
 //import TimeSubmission from './pages/TimeForm';
 //import HelpSection from '.pages/HelpSection';
 //import SchedulePage from './pages/SchedulePage';

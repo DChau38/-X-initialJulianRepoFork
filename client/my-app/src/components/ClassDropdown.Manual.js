@@ -1,11 +1,11 @@
 import React from 'react';
 
-const ClassDropdown = ({ classes, selectedClass, selectNewClass }) => (
+const ClassDropdown = ({ savedClasses, selectedClass, selectNewClass }) => (
   <div>
     <label htmlFor="classDropdown">Select a Class:</label>
     <select id="classDropdown" value={selectedClass} onChange={selectNewClass}>
       <option value="">Select a class</option>
-      {classes.map((className, index) => (
+      {savedClasses.map((className, index) => (
         <option key={index} value={className}>{className}</option>
       ))}
     </select>

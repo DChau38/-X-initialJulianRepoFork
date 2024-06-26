@@ -2,6 +2,7 @@ import '../styles/ClassFormByManual.css';
 import React, { useState } from 'react';
 //import state+effects
 import useClassFormByManual from '../hooks/Manual.index.js';
+import useFetchClassesUponMajorChange from '../hooks/Manual.fetchMajorClasses.js';
 //components
 import SavedClassList from '../components/SavedClassList.Manual.js';
 import ClassDropdown from '../components/ClassDropdown.Manual.js';
@@ -21,13 +22,13 @@ function ClassFormByManual(){
         removeClass,
         handleSendToBackend,
         setClasses
-      }=useClassFormByManual;
+      }=useClassFormByManual();
     //B. useEffect hook
     useFetchClassesUponMajorChange(selectedMajor,setClasses);
     //C. page elements
     return (
         <>
-          <ClassList selectedClasses={savedClasses} removeClass={removeClass} />
+          <SavedClassList savedClasses={savedClasses} removeClass={removeClass} />
           <form onSubmit={addClass}>
             <MajorDropdown majors={majors} selectedMajor={selectedMajor} handleMajorChange={handleMajorChange} />
             <ClassDropdown classes={savedClasses} selectedClass={selectedClass} selectedNewClass={selectNewClass} />

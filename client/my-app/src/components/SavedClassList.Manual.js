@@ -1,10 +1,10 @@
 import React from 'react';
 
-const SavedClassList= ({ selectedClasses, handleRemoveClass }) => (
+const SavedClassList= ({ savedClasses, removeClass }) => (
   <div>
-    {selectedClasses.map(classItem => (
+    {savedClasses.map(classItem => (
       <div key={classItem.id}>
-        {classItem.name} <button onClick={() => handleRemoveClass(classItem.id)}>X</button>
+        {classItem.name} <button onClick={() => removeClass(classItem.id)}>X</button>
       </div>
     ))}
   </div>

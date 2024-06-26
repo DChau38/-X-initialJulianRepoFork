@@ -15,7 +15,7 @@ function useClassFormByManual(){
     //selected class
   const[selectedClass,setSelectedClass]=useState('');
     //saved classes
-  const[savedClasses,setSavedClasses]=useState('');
+  const[savedClasses,setSavedClasses]=useState([]);
 
 
   //B. functions
@@ -25,10 +25,10 @@ function useClassFormByManual(){
    };
       //remove class upon 
    const removeClass = (id) => {
-      setSelectedClasses(selectedClasses.filter(classItem => classItem.id !== id));
+      setSavedClasses(savedClasses.filter(classItem => classItem.id !== id));
    };
-      //clear classes
-   const handleMajorChange = (event) => {
+      //clear classes+adjustMajorChange
+   const handleMajorChange= (event) => {
       setSelectedMajor(event.target.value);
       setClasses([]);
    };
@@ -42,7 +42,7 @@ function useClassFormByManual(){
       }
   };
       //adds class
-    const addClass = (event, setSelectedClass,setSelectedClasses) => {
+    const addClass = (event, setSelectedClass,setSavedClasses) => {
       event.preventDefault();
       //(case): they have not selected  a calss
       if (selectedClass === '') {
@@ -50,13 +50,13 @@ function useClassFormByManual(){
           return;
       }
       //A. Check if the selected class is already in the selectedClasses array
-      const classExists = selectedClasses.some(classItem => classItem.name === selectedClass);
+      const classExists = savedClasses.some(classItem => classItem.name === selectedClass);
       if (classExists) {
           //setErrorMessage('This class has already been added.');
           return;
       }
       //B. If the class does not exist, add it to the selectedClasses array
-      setSelectedClasses([...selectedClasses, { id: selectedClasses.length, name: selectedClass }]);
+      setSavedClasses([...savedClasses, { id: savedClasses.length, name: selectedClass }]);
       setSelectedClass('');
       //setErrorMessage(''); // Clear the error message after successful submission
       };

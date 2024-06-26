@@ -9,7 +9,7 @@ import '../styles/ClassFormByFile.css';
  * D. setSelectedFile the function must be passed so it can be used, but not the state variable (prob bs)
  * E. onClick and onChange one or the other needs the event
  */
-const handleFileChange=(event)=>{
+const handleFileChange=(event,setSelectedFile)=>{
     setSelectedFile(event.target.files[0]);
 }
 
@@ -41,7 +41,7 @@ function ClassFormByFile(){
         <div className='file-upload-wrapper'>
             <h3>Submit your Degree Audit!</h3>
             <div className='file-upload-container'>
-                <input type='file' onChange={event=>(handleFileChange(event))}/>
+                <input type='file' onChange={event=>(handleFileChange(event,setSelectedFile))}/>
                 <button onClick={handleUpload}>Update</button>
             </div>
         </div>
