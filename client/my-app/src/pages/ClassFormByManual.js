@@ -7,12 +7,13 @@ import useFetchClassesUponMajorChange from '../hooks/Manual.fetchMajorClasses.js
 import SavedClassList from '../components/SavedClassList.Manual.js';
 import ClassDropdown from '../components/ClassDropdown.Manual.js';
 import MajorDropdown from '../components/MajorDropdown.Manual.js';
+import ErrorMessage from '../components/ErrorMessage.js';
 
 function ClassFormByManual(){
     //A. accepting states + functions
     const {
         majors,
-        classes,
+        selectedMajorClasses,
         selectedMajor,
         selectedClass,
         savedClasses,
@@ -21,17 +22,22 @@ function ClassFormByManual(){
         addClass,
         removeClass,
         handleSendToBackend,
-        setClasses
+        setSelectedMajorClasses,
+        setSavedClasses,
+        errorMessage,
       }=useClassFormByManual();
     //B. useEffect hook
-    useFetchClassesUponMajorChange(selectedMajor,setClasses);
+    useFetchClassesUponMajorChange(selectedMajor,setSelectedMajorClasses);
     //C. page elements
     return (
         <>
+        <div className="saved-classes-and-errorMessage">
+          {errorMessage && <ErrorMessage message={errorMessage} />}
           <SavedClassList savedClasses={savedClasses} removeClass={removeClass} />
+        </div>
           <form onSubmit={addClass}>
             <MajorDropdown majors={majors} selectedMajor={selectedMajor} handleMajorChange={handleMajorChange} />
-            <ClassDropdown classes={savedClasses} selectedClass={selectedClass} selectedNewClass={selectNewClass} />
+            <ClassDropdown selectedMajorClasses={selectedMajorClasses} selectedClass={selectedClass} selectNewClass={selectNewClass} />
             <button type="submit">Add</button>
             <button type="button" onClick={handleSendToBackend}>Update</button>
           </form>

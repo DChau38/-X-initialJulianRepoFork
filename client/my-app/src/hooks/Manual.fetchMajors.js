@@ -8,7 +8,7 @@ function useFetchMajors(){
     useEffect(()=>{
         (async function FetchData(){
             try {
-                const response=await fetch('https/localhost:9000/major');
+                const response=await fetch('http://localhost:9000/Major');
                 const data=await response.json();
                 setMajors(data);
             }

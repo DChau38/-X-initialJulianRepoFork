@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 //1. fetches classes after major is selected. We're gonna directly put this into the page for ClassFormByManual
-const useFetchClassesUponMajorChange = (selectedMajor, setClasses) => {
+const useFetchClassesUponMajorChange = (selectedMajor, setSelectedMajorClasses) => {
     useEffect(() => {
         if (selectedMajor) {
             async function fetchClasses() {
@@ -11,8 +11,9 @@ const useFetchClassesUponMajorChange = (selectedMajor, setClasses) => {
                     // Fetch classes
                     const response = await fetch(`http://localhost:9000/major/${encodedMajor}`);
                     const data = await response.json();
+                    console.log("yo:",data);
                     // Set classes
-                    setClasses(data);
+                    setSelectedMajorClasses(data);
                 } catch (error) {
                     console.error('Error fetching classes:', error);
                 }

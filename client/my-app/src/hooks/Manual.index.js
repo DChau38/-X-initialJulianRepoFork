@@ -11,11 +11,13 @@ function useClassFormByManual(){
     //selected major
   const[selectedMajor,setSelectedMajor]=useState('');
     //fetch of selected major's classes
-  const[classes,setClasses]=useState([]);
+  const[selectedMajorClasses,setSelectedMajorClasses]=useState([]);
     //selected class
   const[selectedClass,setSelectedClass]=useState('');
     //saved classes
   const[savedClasses,setSavedClasses]=useState([]);
+    //error state
+    const[errorMessage,setErrorMessage]=useState('');
 
 
   //B. functions
@@ -30,7 +32,7 @@ function useClassFormByManual(){
       //clear classes+adjustMajorChange
    const handleMajorChange= (event) => {
       setSelectedMajor(event.target.value);
-      setClasses([]);
+      setSelectedMajorClasses([]);
    };
       //send saved classes to backend
    const handleSendToBackend = async () => {
@@ -42,20 +44,25 @@ function useClassFormByManual(){
       }
   };
       //adds class
-    const addClass = (event, setSelectedClass,setSavedClasses) => {
+    const addClass = (event) => {
       event.preventDefault();
+      //(case1): not selected major
+      if (selectedMajor==''){
+        setErrorMessage('Please select a major to start:)')
+      }
       //(case): they have not selected  a calss
       if (selectedClass === '') {
-          //setErrorMessage('Please select a class before submitting.');
+          setErrorMessage('Now that you have selected a Major, please select a correspondign Class :)');
           return;
       }
       //A. Check if the selected class is already in the selectedClasses array
       const classExists = savedClasses.some(classItem => classItem.name === selectedClass);
       if (classExists) {
-          //setErrorMessage('This class has already been added.');
+          setErrorMessage('This class has already been added :)');
           return;
       }
       //B. If the class does not exist, add it to the selectedClasses array
+      setErrorMessage('');
       setSavedClasses([...savedClasses, { id: savedClasses.length, name: selectedClass }]);
       setSelectedClass('');
       //setErrorMessage(''); // Clear the error message after successful submission
@@ -63,7 +70,7 @@ function useClassFormByManual(){
   //D. return
   return {
     majors,
-    classes,
+    selectedMajorClasses,
     selectedMajor,
     selectedClass,
     savedClasses,
@@ -72,8 +79,9 @@ function useClassFormByManual(){
     addClass,
     removeClass,
     handleSendToBackend,
-    //lol the hook needs it
-    setClasses,
+    //fetchMajorClasses hook does require this
+    setSelectedMajorClasses,
+    errorMessage,
   };
     
 };
