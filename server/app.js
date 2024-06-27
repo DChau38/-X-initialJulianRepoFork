@@ -101,7 +101,7 @@ async function scrapeForCourses(url) {
           link: linkToCourse,   
       };
 
-      console.log(courseInst);
+      //console.log(courseInst);
       emptyCourseArray.push(courseInst);
       }
     });
@@ -118,12 +118,12 @@ async function scrapeForCourses(url) {
 async function connect () {
   try {
       await mongoose.connect("mongodb+srv://chauduksing2:umass123@cluster0.lcwmjao.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
-      console.log("connected to db")
+      console.log("done: connect to db")
       await scrapeForMajors("https://courses.umb.edu/course_catalog/subjects/2024%20Spring");
-      console.log("website scraping done")
-      console.log("starting to scrape for courses: accounting and finance");
+      console.log("done: scrapForMajors ")
+      console.log("starting: scrap for accounting and finance");
       await scrapeForCourses("https://courses.umb.edu/course_catalog/courses/ugrd_AF_2024%20Spring");
-      console.log("done");
+      console.log("(4/4) done: scrap for accounting and finance");
       
   } catch (error) {
       console.log(error.message);
