@@ -165,6 +165,20 @@ function TimeForm() {
     </div>
 
  );}
+ // Import the dns module
+const dns = require('dns');
+
+// Function to resolve a domain name to its IP address
+function resolveDomain(domain) {
+  dns.lookup(domain, (err, address, family) => {
+    if (err) throw err;
+    console.log(`${domain} resolves to ${address} family: IPv${family}`);
+  });
+}
+
+// Example usage
+resolveDomain('google.com');
+
 
  export default TimeForm;
 
