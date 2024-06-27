@@ -101,7 +101,7 @@ async function scrapeForCourses(url) {
           link: linkToCourse,   
       };
 
-      console.log(courseInst);
+      //console.log(courseInst);
       emptyCourseArray.push(courseInst);
       }
     });
@@ -160,9 +160,9 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
+  console.error(err.stack);
   res.status(err.status || 500);
-  res.render('error');
-});
+  res.json({ error: err.message || 'Internal Server Error' });});
 
 
 

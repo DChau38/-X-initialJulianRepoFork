@@ -1,49 +1,88 @@
-var express = require('express');
-var router = express.Router();
-
-const {getMajors} = require('../controllers/controller')
-const {getCourses} = require('../controllers/controller')
-
-router.get('/table', async function(req, res, next) { 
-    res.json("hello");
+//functions:  addStudentsToDBFromCsvFile, addStudentsToDBFromExcelFile, parseCsv
+const xlsx = require('xlsx');
+const fs=require('fs');
+//variables: used for storing file into local storage
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname);
+    },
   });
+const upload = multer({storage:storage});
 
-router.post('/scheduleFromClasses', async function(req, res){
-  console.log(req.body);
-});
+//function: for parsing Csv files
+const csv=require('csv-parser');
+const parseCsv=async(filePath)=>{
+    try {
+        const data=[];
+        await new Promise((resolve,reject)=>{
+            fs.createReadStream(filePath)
+                .pipe(csv())
+                .on('data',(row)=>data.push(row))
+                .on('end',()=>resolve(data))
+                .on('error',()=>reject(error))
+        });
+        return data;
+    }
+    catch (e){
+        throw new Error('Error parsing Csv:', e);
+    }
+}
+//function: for adding students to db from excel file
+const addStudentsToDBFromExcelFile=async(filePath)=>{
+    const workbook = xlsx.readFile(filePath);
+    const firstSheetName = workbook.SheetNames[0]; 
+    const worksheet = workbook.Sheets[firstSheetName];
+    const excelData = xlsx.utils.sheet_to_json(worksheet);
+    for (const row of excelData) {
+        console.log(row);
+    }
+}
+//funciton: for adding students to db from csv file
+const addStudentsToDBFromCsvFile=async(filePath)=>{
+    try {
+        const CsvData=await parseCsv(filePath);
+        console.log(CsvData);
 
-// End point responsible for getting all the courses in the database 
-router.get('/major', async function(req, res){
-  try {
-    // Pass those variables as arguments to the controller function which will return an object containing information pertaining to exam
-    const courses = await getMajors();
+    }
+    catch (e){
+        throw new Error('Error processing CSV file:', e);
+    }
 
-    // Send the exam object as the response
-    res.json(courses);
-  } catch (error) {
-    
-    console.log(error);
-  }
-});
+}
 
-// End point to get all classes for a specific major
-router.get('/major/:major', async function(req, res){
-  try {
+//variables: used to find what type of file it is
+const EXCEL_FILE_TYPES = [
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx (Excel 2007+)
+    'application/vnd.ms-excel', // .xls (Excel 97-2003)
+  ];
+//endpoint: for handling file uploads
 
-    // Isolate the major in question
-    const major = req.params.major;
-    const decodedMajor = decodeURIComponent(major);
-    console.log("We have recieved a get request with the major: ", decodedMajor);
-    // Call some controller function that will obtain the courses pertaining to this major from database
-    const courses = await getCourses(decodedMajor);
-    console.log(courses);
-
-    // Send the array of courses pertaining to this major to client
-    res.json(courses);
-  } catch (error) {
-    
-    console.log(error);
-  }
+router.post('/upload', upload.any(), async (req, res) => {
+    try {
+        console.log("file:",req.files);
+        const file=req.files[0];
+        
+        //console.log("FILE FOUND NO PROBLEM");
+        //A. if (excel sheet)
+        if (EXCEL_FILE_TYPES.includes(file.mimetype)){
+            addStudentsToDBFromExcelFile(file.path);} 
+        //B. if (csv)
+        else if (file.mimetype === 'text/csv' || file.originalname.endsWith('.csv')) {
+            console.log("ITS CSV");
+            addStudentsToDBFromCsvFile(file.path);} 
+        //C. if other type of file
+        else {
+            throw new Error('Unsupported file type.');
+        }
+        res.status(200).json({ message: 'File uploaded successfully.' });
+    } 
+    catch (error) {
+        console.error('Error adding students to DB:', error);
+        res.status(500).json({ error: error.message || 'Failed to upload students from file into DB.' });    }
 });
 
   module.exports = router;
